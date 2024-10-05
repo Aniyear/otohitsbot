@@ -92,12 +92,10 @@ async def process_video_selection(update: Update, context: ContextTypes.DEFAULT_
             text="An error occurred while downloading the audio."
         )
 
-# Main function to start the bot
 def main():
     # Your bot token here
     BOT_TOKEN = os.getenv('BOT_TOKEN')
-    PORT = int(os.getenv('PORT', 8443))  # Get the port from the environment variable, defaulting to 8443
-
+    
     app = ApplicationBuilder().token(BOT_TOKEN).build()
 
     # Start command
@@ -106,8 +104,8 @@ def main():
     # Handle any text message (assumes it's a YouTube link)
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, process_video_selection))
 
-    # Start the bot
-    app.run_polling(port=PORT)  # Use the specified port
+    # Start the bot using polling without specifying a port
+    app.run_polling()  # No need to specify the port here
 
 if __name__ == '__main__':
     main()
