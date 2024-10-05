@@ -1,8 +1,8 @@
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 import os
 import logging
 import re
 from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 import yt_dlp
 
 # Enable logging
@@ -45,7 +45,6 @@ async def download_audio(video_url):
     except Exception as e:
         logger.error(f"Error during download: {e}")
         return None, None
-
 
 # Start command to check if the bot is working
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -97,6 +96,7 @@ async def process_video_selection(update: Update, context: ContextTypes.DEFAULT_
 def main():
     # Your bot token here
     BOT_TOKEN = os.getenv('BOT_TOKEN')
+    PORT = int(os.getenv('PORT', 8443))  # Get the port from the environment variable, defaulting to 8443
 
     app = ApplicationBuilder().token(BOT_TOKEN).build()
 
@@ -107,7 +107,7 @@ def main():
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, process_video_selection))
 
     # Start the bot
-    app.run_polling()
+    app.run_polling(port=PORT)  # Use the specified port
 
 if __name__ == '__main__':
     main()
