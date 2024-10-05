@@ -4,7 +4,10 @@ import re
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 import yt_dlp
+from dotenv import load_dotenv
 
+# Load environment variables from the .env file
+load_dotenv()
 # Enable logging
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
@@ -96,7 +99,7 @@ async def process_video_selection(update: Update, context: ContextTypes.DEFAULT_
 # Main function to start the bot
 def main():
     # Your bot token here
-    BOT_TOKEN = '7449025034:AAFdKFKNUVNKVgwBsQwsxB3wnuefSx5zwC0'
+    BOT_TOKEN = os.getenv('BOT_TOKEN')
 
     app = ApplicationBuilder().token(BOT_TOKEN).build()
 
