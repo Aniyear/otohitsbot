@@ -4,10 +4,7 @@ import re
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 import yt_dlp
-from dotenv import load_dotenv
 
-# Load environment variables from the .env file
-load_dotenv()
 # Enable logging
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
@@ -18,19 +15,18 @@ logger = logging.getLogger(__name__)
 def sanitize_filename(title):
     return re.sub(r'[<>:"/\\|?*]', '', title)  # Remove invalid characters
 
-# Function to download audio from YouTube
 async def download_audio(video_url):
     ydl_opts = {
         'format': 'bestaudio/best',
         'extractaudio': True,
         'audioformat': 'mp3',
-        'outtmpl': '%(id)s.%(ext)s',  # Use video ID for unique naming
+        'outtmpl': '%(id)s.%(ext)s',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'mp3',
             'preferredquality': '192',
         }],
-        'ffmpeg_location': 'C:\\ffmpeg\\bin',  # Replace with your actual path
+        # Remove ffmpeg_location line
     }
 
     try:
@@ -49,6 +45,7 @@ async def download_audio(video_url):
     except Exception as e:
         logger.error(f"Error during download: {e}")
         return None, None
+
 
 # Start command to check if the bot is working
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
