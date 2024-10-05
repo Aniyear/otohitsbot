@@ -26,7 +26,7 @@ async def download_audio(video_url):
             'preferredcodec': 'mp3',
             'preferredquality': '192',
         }],
-        # Remove ffmpeg_location line
+        'cookiefile': 'cookies.txt',  # Add the path to your cookies.txt file
     }
 
     try:
