@@ -1,25 +1,20 @@
+# Use the official Python image
 FROM python:3.9-slim
 
 # Install ffmpeg
 RUN apt-get update && apt-get install -y ffmpeg
 
-# Set the working directory
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy the requirements file first (this allows Docker to cache the installed packages if requirements don't change)
+# Copy the requirements file to the working directory
 COPY requirements.txt .
 
 # Install the required Python packages
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application code
+# Copy the rest of the application code to the working directory
 COPY . .
-
-# Ensure setup.sh is executable
-RUN chmod +x setup.sh
-
-# Run the setup script (if necessary)
-RUN ./setup.sh
 
 # Run the bot
 CMD ["python", "bot.py"]
